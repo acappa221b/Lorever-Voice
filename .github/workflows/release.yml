@@ -1,0 +1,33 @@
+name: Release
+
+# Push a tag like v1.0.0: the tests run, the Windows app is built and attached
+# to a GitHub release with the notes of that version from CHANGELOG.md.
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: npm ci
+      - run: npm test
+      - run: npx electron-builder --win portable --publish never
+      - name: Notes for this version
+        shell: bash
+        run: |
+          v="${GITHUB_REF_NAME#v}"
+          awk -v v="$v" '/^## /{p=($2==v)} p' CHANGELOG.md | tail -n +2 > notes.md
+          test -s notes.md || { echo "CHANGELOG.md has no section for $v"; exit 1; }
+      - name: Release
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release create "$GITHUB_REF_NAME" dist/*.exe --title "Lorever Voice Studio ${GITHUB_REF_NAME#v}" --notes-file notes.md

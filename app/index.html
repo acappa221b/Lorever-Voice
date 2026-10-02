@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; media-src 'self' blob:; style-src 'self'; script-src 'self'">
+  <title>Lorever Voice Studio</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <div class="brand">Lorever <span>Voice Studio</span></div>
+    <label class="field">Your name
+      <input id="narrator" type="text" maxlength="40" placeholder="Narrator">
+    </label>
+    <label class="field">Microphone
+      <select id="mic"></select>
+    </label>
+    <div class="meter"><div id="level"></div></div>
+    <div class="grow"></div>
+    <div id="total" class="total"></div>
+    <button id="export" class="primary">Export (.zip)</button>
+  </header>
+  <div class="body">
+    <nav id="zones"></nav>
+    <main id="main">
+      <div id="help" class="help">
+        <h2>How it works</h2>
+        <p>1. Pick a zone on the left.</p>
+        <p>2. Press <b>Record</b> (or the space bar) and read the text aloud, at your own pace.</p>
+        <p>3. Press <b>Stop</b> (or the space bar again). The next text is ready for you.</p>
+        <p>4. When you are done, press <b>Export (.zip)</b>. Unzip it into <code>World of Warcraft\Interface\AddOns</code>.</p>
+        <p class="muted">Silence at the start and the end is cut for you. You can record a text again at any time.</p>
+      </div>
+    </main>
+  </div>
+  <div id="toast" class="toast"></div>
+  <script src="renderer.js"></script>
+</body>
+</html>
